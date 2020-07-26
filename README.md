@@ -1,8 +1,8 @@
 # Content Creation Response
 
-Plaid is releasing a new API that utilizes cursor-based pagination for the /transactions/get endpoint, effective 12/2/2020. Per [Slack’s engineering blog](https://slack.engineering/evolving-api-pagination-at-slack-1c1f644f8e12), “cursor-based pagination works by returning a pointer to a specific item in the dataset. On subsequent requests, the server returns results after the given pointer.” (link) Let’s walk through how we might convert existing code for this endpoint into code that will work with Plaid’s new API.
+Plaid is releasing a new API that utilizes cursor-based pagination for the /transactions/get endpoint, effective 12/2/2020. Per [Slack’s engineering blog](https://slack.engineering/evolving-api-pagination-at-slack-1c1f644f8e12), “cursor-based pagination works by returning a pointer to a specific item in the dataset. On subsequent requests, the server returns results after the given pointer.” Let’s walk through how we might convert existing code for this endpoint into code that will work with Plaid’s new API.
 
-We’ll start by examining the [existing code](https://plaid.com/docs/#retrieve-transactions-request) to highlight the differences between the current API and the new API. 
+We’ll start by examining the [existing code](https://plaid.com/docs/#retrieve-transactions-request) to highlight the differences between the current API and the new API:
 
 ```javascript
 // Pull transactions for a date range — old API
@@ -46,7 +46,7 @@ client.getTransactions(accessToken, '2018-01-01', '2018-02-01', {
 }
 ```
 
-This code will return a list of transactions (‘transactions’) as well as an updated cursor (‘next_cursor’) that provides a pointer to the first transaction not returned in the list of transactions (in other words, the “next transaction”). We can then use this updated cursor — in this case, ‘efgh’ — as the 'cursor' parameter in subsequent calls of the getTransactions function.
+This code will return a list of transactions (‘transactions’) that occur prior to the provided cursor as well as an updated cursor (‘next_cursor’) that provides a pointer to the first transaction not returned in the list of transactions (in other words, the “next transaction”). We can then use this updated cursor — in this case, ‘efgh’ — as the 'cursor' parameter in subsequent calls of the getTransactions function.
 
 We need to provide a null cursor the first time we call this function under the new API: that the server returns results after a given cursor/pointer, so there’s nothing to initialize it to for the first call.
 
