@@ -48,6 +48,6 @@ client.getTransactions(accessToken, '2018-01-01', '2018-02-01', {
 
 This code will return a list of transactions (‘transactions’) that occur prior to the provided cursor as well as an updated cursor (‘next_cursor’) that provides a pointer to the first transaction not returned in the list of transactions (in other words, the “next transaction”). We can then use this updated cursor — in this case, ‘efgh’ — as the 'cursor' parameter in subsequent calls of the getTransactions function.
 
-We need to provide a null cursor the first time we call this function under the new API: that the server returns results after a given cursor/pointer, so there’s nothing to initialize it to for the first call.
+We need to provide a null cursor the first time we call this function under the new API: the server returns results after a given cursor/pointer, so there’s nothing to initialize it to for the first call.
 
 We can retrieve all the transactions within a particular date range with a while loop: while a non-null next cursor is returned (ie. while there are more transactions to be retrieved within the specified date range), retrieve the transactions and update the cursor to the one returned by the current call.
